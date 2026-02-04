@@ -29,12 +29,12 @@ npm run dev
 You can import the isolated tile component into any part of your application. It is self-contained and maintains a rigid 600x600 dimension (responsive via scaling).
 
 ```tsx
-import CampaignTile from './components/CampaignTile';
+import ContentEngagementTile from './components/ContentEngagementTile';
 
 function MyPage() {
   return (
     <div className="flex justify-center items-center h-screen bg-slate-950">
-      <CampaignTile />
+      <ContentEngagementTile />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import CampaignTile from './components/CampaignTile';
+import ContentEngagementTile from './components/ContentEngagementTile';
 
 export default function App() {
   return (
@@ -23,7 +23,7 @@ export default function App() {
 
         {/* The Isolated Component */}
         <div className="scale-90 md:scale-100 transition-transform duration-500 hover:scale-[1.02]">
-          <CampaignTile />
+          <ContentEngagementTile />
         </div>
 
         <div className="mt-12 flex gap-4 text-slate-500 text-sm font-medium">
