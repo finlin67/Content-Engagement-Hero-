@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -13,7 +15,8 @@ import {
   PlayCircle, 
   Rocket, 
   TrendingUp, 
-  Zap 
+  Zap,
+  LucideIcon
 } from 'lucide-react';
 
 // Reusable glass card style to match the original CSS
@@ -21,12 +24,48 @@ const glassClass = "bg-slate-900/60 backdrop-blur-md border border-white/10";
 const neonGlowPrimary = "shadow-[0_0_20px_rgba(5,183,214,0.4)]";
 const neonGlowPink = "shadow-[0_0_20px_rgba(236,72,153,0.4)]";
 
+interface PipelineStep {
+  id: number;
+  label: string;
+  icon: LucideIcon;
+  step: string;
+}
+
+interface Channel {
+  id: string;
+  label: string;
+  icon: LucideIcon;
+  color: string;
+  border: string;
+  glow: string;
+  margin: string;
+}
+
+interface CounterProps {
+  from: number;
+  to: number;
+  duration: number;
+}
+
 export default function ContentEngagementTile() {
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const pipelineSteps: PipelineStep[] = [
+    { id: 1, label: 'Ideate', icon: Lightbulb, step: '01' },
+    { id: 2, label: 'Write', icon: FilePenLine, step: '02' },
+    { id: 3, label: 'Design', icon: Palette, step: '03' },
+  ];
+
+  const channels: Channel[] = [
+    { id: 'blog', label: 'Blog', icon: FileText, color: 'text-primary', border: 'border-primary/30', glow: neonGlowPrimary, margin: 'mr-0' },
+    { id: 'social', label: 'Social', icon: Share2, color: 'text-accent-pink', border: 'border-accent-pink/30', glow: neonGlowPink, margin: '-mr-6' },
+    { id: 'email', label: 'Email', icon: Mail, color: 'text-accent-purple', border: 'border-accent-purple/30', glow: '', margin: '-mr-6' },
+    { id: 'video', label: 'Video', icon: PlayCircle, color: 'text-white', border: 'border-slate-600', glow: '', margin: 'mr-0' },
+  ];
 
   return (
     <div className="relative w-[600px] h-[600px] bg-slate-950 rounded-xl overflow-hidden shadow-2xl border border-slate-800 font-sans select-none">
@@ -58,10 +97,10 @@ export default function ContentEngagementTile() {
           </motion.h2>
         </div>
         <div className="flex items-center gap-4">
-          <button className="text-slate-400 hover:text-white transition-colors">
+          <button className="text-slate-400 hover:text-white transition-colors" type="button">
             <Search size={20} />
           </button>
-          <button className="text-slate-400 hover:text-white transition-colors">
+          <button className="text-slate-400 hover:text-white transition-colors" type="button">
             <Bell size={20} />
           </button>
           <div className="size-8 rounded-full border border-slate-700 bg-slate-800 flex items-center justify-center overflow-hidden">
@@ -107,11 +146,7 @@ export default function ContentEngagementTile() {
 
           {/* Workflow Pipeline (Left Side) */}
           <div className="absolute left-0 top-1/2 -translate-y-1/2 flex flex-col gap-8 z-20">
-            {[
-              { id: 1, label: 'Ideate', icon: Lightbulb, step: '01' },
-              { id: 2, label: 'Write', icon: FilePenLine, step: '02' },
-              { id: 3, label: 'Design', icon: Palette, step: '03' },
-            ].map((item, index) => (
+            {pipelineSteps.map((item, index) => (
               <motion.div 
                 key={item.id}
                 initial={{ x: -50, opacity: 0 }}
@@ -132,12 +167,7 @@ export default function ContentEngagementTile() {
 
           {/* Channel Radials (Right Side Fanning Out) */}
           <div className="absolute right-0 top-1/2 -translate-y-1/2 flex flex-col gap-10 items-end z-20">
-            {[
-              { id: 'blog', label: 'Blog', icon: FileText, color: 'text-primary', border: 'border-primary/30', glow: neonGlowPrimary, margin: 'mr-0' },
-              { id: 'social', label: 'Social', icon: Share2, color: 'text-accent-pink', border: 'border-accent-pink/30', glow: neonGlowPink, margin: '-mr-6' },
-              { id: 'email', label: 'Email', icon: Mail, color: 'text-accent-purple', border: 'border-accent-purple/30', glow: '', margin: '-mr-6' },
-              { id: 'video', label: 'Video', icon: PlayCircle, color: 'text-white', border: 'border-slate-600', glow: '', margin: 'mr-0' },
-            ].map((item, index) => (
+            {channels.map((item, index) => (
               <motion.div 
                 key={item.id}
                 initial={{ x: 50, opacity: 0 }}
@@ -282,10 +312,10 @@ export default function ContentEngagementTile() {
           </p>
         </div>
         <div className="flex gap-2">
-          <button className="bg-primary text-slate-950 px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest hover:bg-white transition-colors">
+          <button className="bg-primary text-slate-950 px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest hover:bg-white transition-colors" type="button">
             Start Workflow
           </button>
-          <button className="bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-slate-700 transition-colors">
+          <button className="bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-slate-700 transition-colors" type="button">
             Analytics
           </button>
         </div>
@@ -295,11 +325,11 @@ export default function ContentEngagementTile() {
 }
 
 // Helper to count up numbers smoothly
-function Counter({ from, to, duration }: { from: number; to: number; duration: number }) {
-  const [count, setCount] = useState(from);
+function Counter({ from, to, duration }: CounterProps) {
+  const [count, setCount] = useState<number>(from);
 
   useEffect(() => {
-    let startTime: number;
+    let startTime: number | null = null;
     let animationFrame: number;
 
     const animate = (time: number) => {
